@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "technical-assessment"
+version = "0.1.0"
+description = "Technical Assessment: Product Replacement Search"
+authors = ["Sunny <sunny@cofactr.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.32.3"
+pymongo = "^4.7.2"
+psycopg2-binary = "^2.9.9"
+flask = "^3.0.3"
+tqdm = "^4.66.4"
+pyyaml = "^6.0.1"
+pandas = "^2.2.2"
+flask-cors = "^4.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
