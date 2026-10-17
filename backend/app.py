@@ -31,4 +31,4 @@ if __name__ == '__main__':
     import os
     # Fix for macOS multiprocessing issues with Flask reloader
     os.environ['FLASK_ENV'] = 'development'
-    app.run(port=8000, debug=True, use_reloader=False)
+    app.run(host=os.environ.get('FLASK_RUN_HOST'), port=8000, debug=True, use_reloader=False)
