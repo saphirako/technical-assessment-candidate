@@ -25,9 +25,9 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Node.js 20+ and yarn using nvm
+# Install Node.js and yarn using nvm. Keep NODE_VERSION in sync with .nvmrc at the repo root.
 ENV NVM_DIR /home/vscode/.nvm
-ENV NODE_VERSION 20.18.0
+ENV NODE_VERSION 24.22.1
 RUN mkdir -p $NVM_DIR && \
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash && \
     . $NVM_DIR/nvm.sh && \

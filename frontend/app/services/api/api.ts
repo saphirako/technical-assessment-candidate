@@ -1,17 +1,14 @@
 import { api } from './baseApi';
+import { fromOrval } from './orval-query';
+import { postApiReplacements } from './generated/replacements/replacements';
+import type { ReplacementRequest } from './generated/model';
 
-// TODO: Implement your API endpoints here
-// Design the endpoints to match your backend API
-// Example:
-// export const replacementsApi = api.injectEndpoints({
-//     endpoints: (builder) => ({
-//         findReplacements: builder.mutation<YourResponseType, YourRequestType>({
-//             query: (body) => ({
-//                 url: '/api/replacements', // or whatever endpoint you design
-//                 method: 'POST',
-//                 body,
-//             }),
-//         }),
-//     }),
-// });
-// export const { useFindReplacementsMutation } = replacementsApi;
+export const replacementsApi = api.injectEndpoints({
+    endpoints: (builder) => ({
+        findReplacements: builder.mutation({
+            queryFn: (body: ReplacementRequest) => fromOrval(() => postApiReplacements(body)),
+        }),
+    }),
+});
+
+export const { useFindReplacementsMutation } = replacementsApi;
