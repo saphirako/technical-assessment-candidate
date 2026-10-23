@@ -1,30 +1,16 @@
-from flask import Flask, request, jsonify
+from flask import Flask
 from flask_cors import CORS
+
+from health import bp as health_bp
+from replacements import bp as replacements_bp
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend requests
 
 # TODO: Initialize your database connection here (SQLite, PostgreSQL, or MongoDB)
 
-
-@app.route('/api/replacements', methods=['POST'])
-def find_replacements():
-    """
-    Find replacement products endpoint.
-    
-    Design your own request/response format based on the requirements.
-    """
-    data = request.get_json()
-    
-    # TODO: Implement your replacement search logic here
-    
-    return jsonify([])
-
-
-@app.route('/health', methods=['GET'])
-def health():
-    """Health check endpoint."""
-    return jsonify({"status": "ok"})
+app.register_blueprint(health_bp)
+app.register_blueprint(replacements_bp)
 
 
 if __name__ == '__main__':
