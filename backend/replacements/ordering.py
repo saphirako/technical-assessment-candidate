@@ -11,26 +11,15 @@ SORTABLE_FIELDS = (
     "max_operating_temp",
 )
 DEFAULT_ORDER_BY = ("lifecycle_rank",)
-ORDER_BY_FIELD = "order_by"
 
 
-def parse_order_by(body):
-    value = body.get(ORDER_BY_FIELD) if isinstance(body, dict) else None
-    if value is None or value == []:
+def to_order(order_by):
+    if not order_by:
         return [(field, False) for field in DEFAULT_ORDER_BY]
-    if not isinstance(value, list) or not all(isinstance(entry, str) for entry in value):
-        raise ValueError("order_by must be a list of field names, '-' prefix for descending")
     order = []
-    seen = set()
-    for entry in value:
+    for entry in order_by:
         descending = entry.startswith("-")
-        field = entry[1:] if descending else entry
-        if field not in SORTABLE_FIELDS:
-            raise ValueError(f"order_by field must be one of {sorted(SORTABLE_FIELDS)}, got {entry!r}")
-        if field in seen:
-            raise ValueError(f"order_by must not repeat a field: {field}")
-        seen.add(field)
-        order.append((field, descending))
+        order.append((entry[1:] if descending else entry, descending))
     return order
 
 

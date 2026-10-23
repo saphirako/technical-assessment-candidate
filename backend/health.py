@@ -1,8 +1,17 @@
-from flask import Blueprint, jsonify
+from flask.views import MethodView
+from flask_smorest import Blueprint
+from marshmallow import Schema, fields
 
-bp = Blueprint('health', __name__)
+bp = Blueprint("health", __name__)
 
 
-@bp.route('/health', methods=['GET'])
-def health():
-    return jsonify({"status": "ok"})
+class HealthSchema(Schema):
+    status = fields.String(required=True)
+
+
+@bp.route("/health")
+class Health(MethodView):
+    @bp.doc(summary="Service health check")
+    @bp.response(200, HealthSchema)
+    def get(self):
+        return {"status": "ok"}

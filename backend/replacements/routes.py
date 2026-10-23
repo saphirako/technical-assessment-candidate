@@ -1,18 +1,27 @@
-from flask import Blueprint, jsonify, request
+from flask.views import MethodView
+from flask_smorest import Blueprint
 
-from .filters import parse_filters
-from .ordering import parse_order_by
+from .ordering import to_order
+from .request import ReplacementRequest
+from .response import ProductSchema
 from .search import search_products
 
-bp = Blueprint('replacements', __name__)
+bp = Blueprint("replacements", __name__)
 
 
-@bp.route('/api/replacements', methods=['POST'])
-def find_replacements():
-    try:
-        body = request.get_json(silent=True)
-        filters = parse_filters(body)
-        order = parse_order_by(body)
-    except ValueError as error:
-        return jsonify({"error": str(error)}), 400
-    return jsonify(search_products(filters, order))
+@bp.route("/api/replacements", methods=["POST"])
+class ReplacementList(MethodView):
+    @bp.doc(
+        summary="Search for replacement products",
+        description=(
+            "Returns products matching any combination of the supplied filters. "
+            "Temperature bands use containment: a product matches when its range "
+            "covers the requested range. Results default to lifecycle preference "
+            "(Active first); use order_by with a '-' prefix for descending."
+        ),
+    )
+    @bp.arguments(ReplacementRequest, location="json", required=False)
+    @bp.response(200, ProductSchema(many=True))
+    def post(self, payload):
+        order = to_order(payload.pop("order_by", None))
+        return search_products(payload, order)
