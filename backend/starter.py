@@ -1,7 +1,6 @@
 import json
 from typing import Dict, Iterable, List, Tuple
 import requests
-import sqlite3
 import pymongo
 import psycopg2
 
@@ -45,34 +44,6 @@ def product_generator() -> Iterable[Dict]:
                 print(product)
             yield product
 
-
-def sqlite3_example():
-    """
-    Example of how to use sqlite3. You will need to adjust the code to handle the other attributes and additional data.
-    """
-
-    # Create the table if it does not exist
-    conn = sqlite3.connect("kb_starter.db")
-    cursor = conn.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY, source TEXT, mpn TEXT, classification TEXT)")
-    conn.commit()
-
-    # Reset the generator to initial state
-    reset_generator()
-
-    # Insert the first 1000 products into the database
-    for i, product in enumerate(product_generator()):
-        mpn, source, classification, lifeycle_status, rohs_compliance, min_operating_temp, max_operating_temp = product["mpn"], product["source"], product["classification"], product["lifecycle_status"], product["rohs_compliance"], product["min_operating_temp"], product["max_operating_temp"]
-        additional_data = product["additional_data"]
-
-        cursor.execute("INSERT INTO products (source, mpn, classification) VALUES (?, ?, ?)", (source, mpn, classification))
-        conn.commit()
-        
-        if i >= 1000:
-            break
-    
-    cursor.execute("SELECT * FROM products ORDER BY id DESC LIMIT 1")
-    print("Last item in Sqlite3", cursor.fetchone())
 
 def check_usage():
     """
