@@ -11,7 +11,7 @@ OPERATING_TEMP_FLOOR = -40
 OPERATING_TEMP_CEILING = 85
 ATTRIBUTE_MIN = 0
 ATTRIBUTE_MAX = 4
-MPN_PATTERN = re.compile(r"[A-Za-z0-9]{10}")
+MPN_PATTERN = re.compile(r"^[A-Za-z0-9]{10}$")
 
 sources_str_list = ', '.join(repr(s) for s in SOURCES)
 lifecycle_str_list = ', '.join(repr(s) for s in LIFECYCLE_RANK)
